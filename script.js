@@ -72,6 +72,23 @@ remove.classList.add("remove")
 addToLib.appendChild(remove)
 
 
+//select the remove button 
+const getRemoveBtn = document.querySelectorAll('.remove');
+
+//event listener to capture the data-value of the cell that holds the remove book button 
+getRemoveBtn.forEach(button => {
+    button.addEventListener('click', function(event) {
+        //select cell of remove button
+        const parentTd = event.target.closest('td');
+        
+        // Get the 'data-value' attribute from the parent <td>(cell)
+        const dataValue = parentTd.getAttribute('data-value');
+        
+        // Log or use the data-value as needed
+        console.log("The data-value of the parent <td> is:", dataValue);
+    });
+});
+
 }
 }
 
