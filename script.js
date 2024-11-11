@@ -1,8 +1,12 @@
 //array of all the books in my library
 const myLibrary = ["LOTR", "Bible", "The Illiad", ["book1", "book2", "book3"]];
 
-function Book() {
-  // the constructor...
+//book conscructor
+function Book(title, author, pages, read) {
+  this.title=title;
+  this.author=author;
+  this.pages=pages;
+  this.read=read;
 }
 
 function addBookToLibrary() {
