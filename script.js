@@ -32,13 +32,24 @@ function Book(title, author, pages, read) {
   this.read=read;
 
   this.toString = function() {
-    return `${this.title}, ${this.author}, ${this.pages}, ${this.read}`
+    return `Title:${this.title}<br>
+     Author:${this.author}<br>
+     Page count:${this.pages}<br>
+     Read yet?:${this.read}`
   }
 }
 //fucntion to create new book object and push it the myLibrary array 
 function addBookToLibrary() {
-  let bookOne = new Book("LOTR", "Tolkien", 543, "have not read")
+    const titleValue = document.getElementById("title").value;
+    const authorValue = document.getElementById("author").value;
+    const pagesValue = document.getElementById("pages").value;
+    const readValue = document.getElementById("read").value;
+  let bookOne = new Book(titleValue, authorValue, pagesValue, readValue)
   myLibrary.push(bookOne)
+  upDateCell();
+  modal.style.display = "none";
+  backdrop.style.display = "none";
+  document.body.classList.remove('modal-open');
 }
 
 //function that loops over myLibrary and updates cells with book info 
@@ -51,24 +62,18 @@ if(addToLib){
 else {
     console.log("This cell doesn't exist.")
 }
-}
-}
+//Create button to remove book from library
+const remove = document.createElement('button');
+//Make button say "remove book"
+remove.textContent = "Remove book"
+//Give class of "remove" to button 
+remove.classList.add("remove")
+//append remove book button to table cell
+addToLib.appendChild(remove)
 
-addBookToLibrary();
-console.log(myLibrary)
-upDateCell();
 
-//function to capture field values of modal
-function getModalInfo () {
-const titleValue = document.getElementById("title").value;
-    console.log(titleValue)
-    const authorValue = document.getElementById("author").value;
-    console.log(authorValue)
-    const pagesValue = document.getElementById("pages").value;
-    console.log(pagesValue)
-    const readValue = document.getElementById("read").value;
-    console.log(readValue)
+}
 }
 
 //event listener on modal button to grab field values
-document.getElementById("add-info").addEventListener("click", getModalInfo);
+document.getElementById("add-info").addEventListener("click", addBookToLibrary);
