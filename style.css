@@ -7,21 +7,19 @@ html, body {
     display: flex;
     align-items: center;
    flex-direction: column;
+   transition: backdrop-filter 0.3s ease-in-out;
+   position:relative
   }
-  /*.container {
-    width: 100%;
-    height: 100%;
-    background-color: blueviolet;
-    margin: 0px;
-    display: flex;
-    align-items: center;
-   flex-direction: column;
-  }*/
+
+  body.modal-open {
+    backdrop-filter: blur(5px); 
+    overflow: hidden; 
+}
 
   .btn {
    background-color: rgb(165, 116, 42);
    margin-top: 50px;
-   margin-left: 315px;
+   margin-left: 340px;
   }
 
   table {
@@ -48,3 +46,54 @@ html, body {
     width: 150px;
     height: 150px;
   }
+
+  .modal {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    background-color: darkblue;
+    align-items: center;
+    padding: 1em;
+    top: 50px; 
+    z-index: 1000;
+  }
+
+  .modal {
+    transition: top 0.3s ease-in-out;
+  }
+
+  input {
+    margin-top: 10px;
+    width: 75%;
+  }
+
+  .add {
+    margin-top: 15px;
+  }
+
+  .inner-modal {
+    display: flex;
+    flex-direction: column;
+    background-color: darkblue;
+    align-items: center;
+    padding: 1em;
+    height: 100%;
+    width: 100%;
+  }
+
+  .modal.show {
+    opacity: 1; 
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Slight black tint */
+    display: none; /* Hidden by default */
+    z-index: 999; /* Positioned behind the modal */
+    backdrop-filter: blur(5px); /* Apply the blur effect */
+    transition: display 0s 0.3s; /* Delay hiding the backdrop */
+}
