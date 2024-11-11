@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <div class="btn-div">
-    <button class="btn">Add Book To Libray</button>
+    <button class="btn">New Book</button>
     </div>
     <table>
         <tr>
@@ -41,6 +41,19 @@
           </tr>
       </table>
 
+</div>
+
+<div class="backdrop"></div>
+
+<div class="modal">
+    <div class="inner-modal">
+    <h3 class="header">New Book</h3>
+    <input type="text" id="title" placeholder="title">
+    <input type="text" id="author" placeholder="author">
+    <input type="text" id="pages" placeholder="# of pages">
+    <input type="text" id="read" placeholder="read it yet?">
+    <button class="add" id="add-info">Add</button>
+    </div>
 </div>
 <script src="script.js"></script>
 </body>
