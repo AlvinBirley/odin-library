@@ -53,43 +53,42 @@ function addBookToLibrary() {
 }
 
 //function that loops over myLibrary and updates cells with book info 
-function upDateCell (){
-for (let i=0; i<myLibrary.length; i++) {
-    let addToLib= document.querySelector(`td[data-value="${i+1}"]`)
-if(addToLib){
-    addToLib.innerHTML=myLibrary[i]
-}
-else {
-    console.log("This cell doesn't exist.")
-}
-//Create button to remove book from library
-const remove = document.createElement('button');
-//Make button say "remove book"
-remove.textContent = "Remove book"
-//Give class of "remove" to button 
-remove.classList.add("remove")
-//append remove book button to table cell
-addToLib.appendChild(remove)
-
-
-//select the remove button 
-const getRemoveBtn = document.querySelectorAll('.remove');
-
-//event listener to capture the data-value of the cell that holds the remove book button 
-getRemoveBtn.forEach(button => {
-    button.addEventListener('click', function(event) {
-        //select cell of remove button
-        const parentTd = event.target.closest('td');
-        
-        // Get the 'data-value' attribute from the parent <td>(cell)
-        const dataValue = parentTd.getAttribute('data-value');
-        
-        // Log or use the data-value as needed
-        console.log("The data-value of the parent <td> is:", dataValue);
+function upDateCell() {
+    // Clear all table cells first to reset
+    const allCells = document.querySelectorAll('td');
+    allCells.forEach(cell => {
+        cell.innerHTML = ''; // Clear cell content
     });
-});
 
-}
+    // Now, loop over the myLibrary array to populate the table with books
+    for (let i = 0; i < myLibrary.length; i++) {
+        const addToLib = document.querySelector(`td[data-value="${i+1}"]`);
+        if (addToLib) {
+            // Update cell with book info
+            addToLib.innerHTML = myLibrary[i].toString();
+
+            
+            // Create and append "remove book" button
+            const remove = document.createElement('button');
+            remove.textContent = "Remove book";
+            remove.classList.add("remove");
+            addToLib.appendChild(remove);
+
+            // Add event listener for the remove button
+            remove.addEventListener('click', function(event) {
+                const parentTd = event.target.closest('td');
+                const dataValue = parentTd.getAttribute('data-value');
+
+                // Remove the book from myLibrary
+                myLibrary.splice(i, 1); // Use splice to properly remove the book
+
+                // Re-render the table
+                upDateCell();
+            });
+        } else {
+            console.log("This cell doesn't exist.");
+        }
+    }
 }
 
 //event listener on modal button to grab field values
