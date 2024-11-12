@@ -24,72 +24,99 @@ modalBtn.addEventListener('click', () => {
     document.body.classList.add('modal-open');
 })
 
+
 //book conscructor
-function Book(title, author, pages, read) {
+function Book(title, author, pages) {
   this.title=title;
   this.author=author;
   this.pages=pages;
-  this.read=read;
 
   this.toString = function() {
     return `Title:${this.title}<br>
      Author:${this.author}<br>
-     Page count:${this.pages}<br>
-     Read yet?:${this.read}`
+     Page count:${this.pages}`
   }
 }
-//fucntion to create new book object and push it the myLibrary array 
-function addBookToLibrary() {
+
+// Add toggleRead method to the Book prototype
+Book.prototype.toggleRead = function() {
+    // Toggle the read status between 'Yes' and 'No'
+    this.read = (this.read === 'Yes') ? 'No' : 'Yes';
+  };
+  
+  // Function to create new book object and push it to the myLibrary array
+  function addBookToLibrary() {
     const titleValue = document.getElementById("title").value;
     const authorValue = document.getElementById("author").value;
     const pagesValue = document.getElementById("pages").value;
-    const readValue = document.getElementById("read").value;
-  let bookOne = new Book(titleValue, authorValue, pagesValue, readValue)
-  myLibrary.push(bookOne)
-  upDateCell();
-  modal.style.display = "none";
-  backdrop.style.display = "none";
-  document.body.classList.remove('modal-open');
-}
-
-//function that loops over myLibrary and updates cells with book info 
+    
+    let bookOne = new Book(titleValue, authorValue, pagesValue);
+    myLibrary.push(bookOne);
+    upDateCell();
+    modal.style.display = "none";
+    backdrop.style.display = "none";
+    document.body.classList.remove('modal-open');
+  }
+  
+  // Function to update the table cells with book information
 function upDateCell() {
     // Clear all table cells first to reset
     const allCells = document.querySelectorAll('td');
     allCells.forEach(cell => {
-        cell.innerHTML = ''; // Clear cell content
+      cell.innerHTML = ''; // Clear cell content
     });
 
-    // Now, loop over the myLibrary array to populate the table with books
+    // Loop over the myLibrary array to populate the table with books
     for (let i = 0; i < myLibrary.length; i++) {
-        const addToLib = document.querySelector(`td[data-value="${i+1}"]`);
-        if (addToLib) {
-            // Update cell with book info
-            addToLib.innerHTML = myLibrary[i].toString();
+      const addToLib = document.querySelector(`td[data-value="${i+1}"]`);
+      if (addToLib) {
+        // Create a wrapper div to hold the book info and the buttons
+        const cellWrapper = document.createElement('div');
+        cellWrapper.classList.add('cell-wrapper');
 
-            
-            // Create and append "remove book" button
-            const remove = document.createElement('button');
-            remove.textContent = "Remove book";
-            remove.classList.add("remove");
-            addToLib.appendChild(remove);
+        // Update cell with book info
+        const bookInfo = document.createElement('div');
+        bookInfo.innerHTML = myLibrary[i].toString();
+        cellWrapper.appendChild(bookInfo);
 
-            // Add event listener for the remove button
-            remove.addEventListener('click', function(event) {
-                const parentTd = event.target.closest('td');
-                const dataValue = parentTd.getAttribute('data-value');
+        // Create toggle button to change read status
+        const toggle = document.createElement('button');
+        toggle.textContent = myLibrary[i].read === 'Yes' ? 'Read' : 'Not Read';
+        toggle.classList.add('toggle-read');
+        cellWrapper.appendChild(toggle);
 
-                // Remove the book from myLibrary
-                myLibrary.splice(i, 1); // Use splice to properly remove the book
+        // Add event listener to the toggle button to change the read status
+        toggle.addEventListener('click', function(event) {
+          // Toggle the read status of the book
+          myLibrary[i].toggleRead();
 
-                // Re-render the table
-                upDateCell();
-            });
-        } else {
-            console.log("This cell doesn't exist.");
-        }
+          // Update the button text to reflect the new read status
+          toggle.textContent = myLibrary[i].read === 'Yes' ? 'Read' : 'Not Read';
+        });
+
+        // Create and append "remove book" button
+        const remove = document.createElement('button');
+        remove.textContent = "Remove book";
+        remove.classList.add("remove");
+        cellWrapper.appendChild(remove);
+
+        // Add event listener for the remove button
+        remove.addEventListener('click', function(event) {
+          const parentTd = event.target.closest('td');
+          const dataValue = parentTd.getAttribute('data-value');
+
+          // Remove the book from myLibrary
+          myLibrary.splice(i, 1); // Use splice to properly remove the book
+
+          // Re-render the table
+          upDateCell();
+        });
+
+        // Append the wrapper to the table cell
+        addToLib.appendChild(cellWrapper);
+      }
     }
 }
-
-//event listener on modal button to grab field values
-document.getElementById("add-info").addEventListener("click", addBookToLibrary);
+  
+  // Event listener on modal button to grab field values
+  document.getElementById("add-info").addEventListener("click", addBookToLibrary);
